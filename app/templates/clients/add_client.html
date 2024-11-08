@@ -1,0 +1,74 @@
+{% extends "base.html" %} {% block title %}Add Client - Car Management System{%
+endblock %} {% block content %}
+<h1 class="text-3xl font-bold mb-6">Add New Client</h1>
+<form
+  action="{{ url_for('clients.add_client') }}"
+  method="POST"
+  class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="name">
+      Name
+    </label>
+    <input
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="name"
+      name="name"
+      type="text"
+      placeholder="Client Name"
+      required
+    />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+      Email
+    </label>
+    <input
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="email"
+      name="email"
+      type="email"
+      placeholder="client@example.com"
+      required
+    />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="phone">
+      Phone
+    </label>
+    <input
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="phone"
+      name="phone"
+      type="tel"
+      placeholder="Phone Number"
+      required
+    />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="address">
+      Address
+    </label>
+    <textarea
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="address"
+      name="address"
+      placeholder="Client Address"
+    ></textarea>
+  </div>
+  <div class="flex items-center justify-between">
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      type="submit"
+    >
+      Add Client
+    </button>
+    <a
+      class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+      href="{{ url_for('clients.client_list') }}"
+    >
+      Cancel
+    </a>
+  </div>
+</form>
+{% endblock %}

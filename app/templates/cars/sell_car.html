@@ -1,0 +1,225 @@
+{% extends "base.html" %} {% block title %}Sell Car - Car Management System{%
+endblock %} {% block content %}
+<h1 class="text-2xl font-bold mb-4">Sell Car</h1>
+<div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
+  <h2 class="text-xl font-semibold mb-4">Car Details</h2>
+  <p><strong>Make:</strong> {{ car.make }}</p>
+  <p><strong>Model:</strong> {{ car.model }}</p>
+  <p><strong>Year:</strong> {{ car.year }}</p>
+  <p><strong>Price:</strong> ${{ car.price }}</p>
+
+  <form
+    action="{{ url_for('cars.sell_car', car_id=car._id) }}"
+    method="post"
+    class="mt-6"
+  >
+    <div class="mb-4">
+      <label for="client_type" class="block text-sm font-medium text-gray-700"
+        >Client Type</label
+      >
+      <select
+        id="client_type"
+        name="client_type"
+        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        onchange="toggleClientForm()"
+      >
+        <option value="new">New Client</option>
+        <option value="existing">Existing Client</option>
+      </select>
+    </div>
+
+    <div id="new_client_form">
+      <div class="mb-4">
+        <label for="name" class="block text-sm font-medium text-gray-700"
+          >Name</label
+        >
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="email" class="block text-sm font-medium text-gray-700"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="phone" class="block text-sm font-medium text-gray-700"
+          >Phone</label
+        >
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          required
+        />
+      </div>
+      <div class="mb-4">
+        <label for="address" class="block text-sm font-medium text-gray-700"
+          >Address</label
+        >
+        <textarea
+          id="address"
+          name="address"
+          rows="3"
+          class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          required
+        ></textarea>
+      </div>
+    </div>
+
+    <div id="existing_client_form" style="display: none">
+      <div class="mb-4">
+        <label for="client_id" class="block text-sm font-medium text-gray-700"
+          >Select Client</label
+        >
+        <select
+          id="client_id"
+          name="client_id"
+          class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        >
+          {% for client in clients %}
+          <option value="{{ client._id }}">{{ client.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <label
+        for="purchase_amount"
+        class="block text-sm font-medium text-gray-700"
+        >Purchase Amount</label
+      >
+      <input
+        type="number"
+        id="purchase_amount"
+        name="purchase_amount"
+        step="0.01"
+        min="0"
+        class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        required
+      />
+    </div>
+
+    <div class="mb-4">
+      <label
+        for="payment_amount"
+        class="block text-sm font-medium text-gray-700"
+        >Payment Amount</label
+      >
+      <input
+        type="number"
+        id="payment_amount"
+        name="payment_amount"
+        step="0.01"
+        min="0"
+        class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        required
+      />
+    </div>
+
+    <div class="mb-4">
+      <label
+        for="remaining_balance"
+        class="block text-sm font-medium text-gray-700"
+        >Remaining Balance</label
+      >
+      <input
+        type="number"
+        id="remaining_balance"
+        name="remaining_balance"
+        step="0.01"
+        min="0"
+        class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        required
+        readonly
+      />
+    </div>
+
+    <div class="mb-4">
+      <label
+        for="next_payment_date"
+        class="block text-sm font-medium text-gray-700"
+        >Next Payment Date</label
+      >
+      <input
+        type="date"
+        id="next_payment_date"
+        name="next_payment_date"
+        class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        required
+      />
+    </div>
+
+    <div class="mt-6">
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Sell Car
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function toggleClientForm() {
+    const clientType = document.getElementById("client_type").value;
+    const existingClientForm = document.getElementById("existing_client_form");
+    const newClientForm = document.getElementById("new_client_form");
+
+    if (clientType === "existing") {
+      existingClientForm.style.display = "block";
+      newClientForm.style.display = "none";
+      document.getElementById("client_id").required = true;
+      document.getElementById("name").required = false;
+      document.getElementById("email").required = false;
+      document.getElementById("phone").required = false;
+      document.getElementById("address").required = false;
+    } else {
+      existingClientForm.style.display = "none";
+      newClientForm.style.display = "block";
+      document.getElementById("client_id").required = false;
+      document.getElementById("name").required = true;
+      document.getElementById("email").required = true;
+      document.getElementById("phone").required = true;
+      document.getElementById("address").required = true;
+    }
+  }
+
+  function calculateRemainingBalance() {
+    const purchaseAmount =
+      parseFloat(document.getElementById("purchase_amount").value) || 0;
+    const paymentAmount =
+      parseFloat(document.getElementById("payment_amount").value) || 0;
+    const remainingBalance = Math.max(0, purchaseAmount - paymentAmount);
+    document.getElementById("remaining_balance").value =
+      remainingBalance.toFixed(2);
+  }
+
+  document
+    .getElementById("purchase_amount")
+    .addEventListener("input", calculateRemainingBalance);
+  document
+    .getElementById("payment_amount")
+    .addEventListener("input", calculateRemainingBalance);
+
+  // Call the functions on page load to set the initial state
+  window.onload = function () {
+    toggleClientForm();
+    calculateRemainingBalance();
+  };
+</script>
+{% endblock %}

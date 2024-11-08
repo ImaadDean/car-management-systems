@@ -1,0 +1,77 @@
+{% extends "base.html" %} {% block title %}Add Car - Car Management System{%
+endblock %} {% block content %}
+<h1 class="text-3xl font-bold mb-6">Add New Car</h1>
+<form
+  action="{{ url_for('cars.add_car') }}"
+  method="POST"
+  class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="make">
+      Make
+    </label>
+    <input
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="make"
+      name="make"
+      type="text"
+      placeholder="Car Make"
+      required
+    />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="model">
+      Model
+    </label>
+    <input
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="model"
+      name="model"
+      type="text"
+      placeholder="Car Model"
+      required
+    />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="year">
+      Year
+    </label>
+    <input
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="year"
+      name="year"
+      type="number"
+      placeholder="Year"
+      required
+    />
+  </div>
+  <div class="mb-6">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="price">
+      Price
+    </label>
+    <input
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="price"
+      name="price"
+      type="number"
+      step="0.01"
+      placeholder="Price"
+      required
+    />
+  </div>
+  <div class="flex items-center justify-between">
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      type="submit"
+    >
+      Add Car
+    </button>
+    <a
+      class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+      href="{{ url_for('main.dashboard') }}"
+    >
+      Cancel
+    </a>
+  </div>
+</form>
+{% endblock %}

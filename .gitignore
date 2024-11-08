@@ -1,0 +1,15 @@
+__pycache__/config.cpython-311.pyc
+app/__pycache__/__init__.cpython-311.pyc
+app/__pycache__/models.cpython-311.pyc
+app/auth/__pycache__/__init__.cpython-311.pyc
+app/auth/__pycache__/routes.cpython-311.pyc
+app/auth/__pycache__/utils.cpython-311.pyc
+app/cars/__pycache__/__init__.cpython-311.pyc
+app/main/__pycache__/routes.cpython-311.pyc
+app/cars/__pycache__/routes.cpython-311.pyc
+app/clients/__pycache__/__init__.cpython-311.pyc
+app/expenses/__pycache__/__init__.cpython-311.pyc
+app/expenses/__pycache__/routes.cpython-311.pyc
+app/clients/__pycache__/routes.cpython-311.pyc
+app/main/__pycache__/__init__.cpython-311.pyc
+.vercel

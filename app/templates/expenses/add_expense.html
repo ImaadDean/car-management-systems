@@ -1,0 +1,97 @@
+{% extends "base.html" %} {% block title %}Add Expense - Car Management System{%
+endblock %} {% block content %}
+<h1 class="text-3xl font-bold mb-6">Add New Expense</h1>
+<form
+  action="{{ url_for('expenses.add_expense') }}"
+  method="POST"
+  class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="date">
+      Date
+    </label>
+    <input
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="date"
+      name="date"
+      type="date"
+      required
+    />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="amount">
+      Amount
+    </label>
+    <input
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="amount"
+      name="amount"
+      type="number"
+      step="0.01"
+      placeholder="0.00"
+      required
+    />
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="category">
+      Category
+    </label>
+    <select
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="category"
+      name="category"
+      required
+    >
+      <option value="">Select a category</option>
+      <option value="Maintenance">Maintenance</option>
+      <option value="Fuel">Fuel</option>
+      <option value="Insurance">Insurance</option>
+      <option value="Repairs">Repairs</option>
+      <option value="Other">Other</option>
+    </select>
+  </div>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
+      Description
+    </label>
+    <textarea
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="description"
+      name="description"
+      placeholder="Expense description"
+      required
+    ></textarea>
+  </div>
+  <div class="mb-6">
+    <label class="block text-gray-700 text-sm font-bold mb-2" for="car_id">
+      Associated Car (optional)
+    </label>
+    <select
+      class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      id="car_id"
+      name="car_id"
+    >
+      <option value="">Select a car (optional)</option>
+      {% for car in cars %}
+      <option value="{{ car._id }}">
+        {{ car.make }} {{ car.model }} ({{ car.year }})
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="flex items-center justify-between">
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      type="submit"
+    >
+      Add Expense
+    </button>
+    <a
+      class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+      href="{{ url_for('expenses.expense_list') }}"
+    >
+      Cancel
+    </a>
+  </div>
+</form>
+{% endblock %}

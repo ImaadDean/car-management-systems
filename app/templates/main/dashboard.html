@@ -1,0 +1,270 @@
+{% extends "base.html" %} {% block title %}Dashboard - Car Management System{%
+endblock %} {% block content %}
+<div class="container mx-auto px-3 py-3">
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+    <div class="bg-white shadow rounded-lg p-4">
+      <div class="flex justify-between items-center pb-2">
+        <h2 class="text-sm font-medium">Total Cars</h2>
+        <svg
+          class="h-5 w-5 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16m-7 6h7"
+          />
+        </svg>
+      </div>
+      <div class="text-2xl font-bold">{{ total_cars }}</div>
+      <p class="text-xs text-gray-500">
+        +{{ new_cars_last_month }} from last month
+      </p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <div class="flex justify-between items-center pb-2">
+        <h2 class="text-sm font-medium">Total Value</h2>
+        <svg
+          class="h-5 w-5 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8c2.28 0 4-1.72 4-4s-1.72-4-4-4-4 1.72-4 4 1.72 4 4 4zm0 4c-2.28 0-4 1.72-4 4v5h8v-5c0-2.28-1.72-4-4-4z"
+          />
+        </svg>
+      </div>
+      <div class="text-2xl font-bold">UGX {{ total_value|round|int }}</div>
+      <p class="text-xs text-gray-500">
+        +{{ value_increase_percentage|round(1) }}% from last month
+      </p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <div class="flex justify-between items-center pb-2">
+        <h2 class="text-sm font-medium">Revenue</h2>
+        <svg
+          class="h-5 w-5 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M3 3v18h18M3 13h18M8 9l4-4m0 0l4 4m-4-4v12"
+          />
+        </svg>
+      </div>
+      <div class="text-2xl font-bold">UGX {{ revenue|round|int }}</div>
+      <p class="text-xs text-gray-500">
+        +{{ revenue_increase_percentage|round(1) }}% from last month
+      </p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg p-4">
+      <div class="flex justify-between items-center pb-2">
+        <h2 class="text-sm font-medium">Total Capital</h2>
+        <svg
+          class="h-5 w-5 text-gray-400"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+      <div class="text-2xl font-bold">UGX {{ total_capital|round|int }}</div>
+      <button
+        id="updateCapitalBtn"
+        class="text-xs text-blue-500 hover:text-blue-700"
+      >
+        Update
+      </button>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center mb-6">
+    <h6 class="text-2xl font-bold text-gray-900">Car Inventory</h6>
+    <a
+      href="{{ url_for('cars.add_car') }}"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+    >
+      Add New Car
+    </a>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Make
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Model
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Year
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Price
+          </th>
+          <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+          >
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        {% for car in cars %}
+        <tr>
+          <td
+            class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+          >
+            {{ car.make }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ car.model }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {{ car.year }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            UGX {{ car.price }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+            <a
+              href="{{ url_for('cars.edit_car', car_id=car._id) }}"
+              class="text-indigo-600 hover:text-indigo-900 mr-3"
+              >Edit</a
+            >
+            <a
+              href="{{ url_for('cars.delete_car', car_id=car._id) }}"
+              class="text-red-600 hover:text-red-900"
+              onclick="return confirm('Are you sure you want to delete this car?')"
+              >Delete</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal for updating capital -->
+<div
+  id="updateCapitalModal"
+  class="fixed z-10 inset-0 overflow-y-auto hidden"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div
+    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+  >
+    <div
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+      aria-hidden="true"
+    ></div>
+    <span
+      class="hidden sm:inline-block sm:align-middle sm:h-screen"
+      aria-hidden="true"
+      >&#8203;</span
+    >
+    <div
+      class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+    >
+      <form action="{{ url_for('main.update_capital') }}" method="POST">
+        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div class="sm:flex sm:items-start">
+            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <h3
+                class="text-lg leading-6 font-medium text-gray-900"
+                id="modal-title"
+              >
+                Update Total Capital
+              </h3>
+              <div class="mt-2">
+                <input
+                  type="number"
+                  name="capital"
+                  id="capitalInput"
+                  placeholder="Enter new capital amount"
+                  required
+                  class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+          <button
+            type="submit"
+            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+          >
+            Update
+          </button>
+          <button
+            type="button"
+            id="closeModal"
+            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  const updateCapitalBtn = document.getElementById("updateCapitalBtn");
+  const updateCapitalModal = document.getElementById("updateCapitalModal");
+  const closeModal = document.getElementById("closeModal");
+
+  updateCapitalBtn.addEventListener("click", () => {
+    updateCapitalModal.classList.remove("hidden");
+  });
+
+  closeModal.addEventListener("click", () => {
+    updateCapitalModal.classList.add("hidden");
+  });
+
+  // Close modal when clicking outside
+  updateCapitalModal.addEventListener("click", (e) => {
+    if (e.target === updateCapitalModal) {
+      updateCapitalModal.classList.add("hidden");
+    }
+  });
+</script>
+{% endblock %}

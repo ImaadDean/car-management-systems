@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Car Management System{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body class="bg-gray-100">
+    <div class="flex h-screen bg-gray-100">
+      <!-- Sidebar -->
+      <aside
+        id="sidebar"
+        class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 md:relative"
+      >
+        <div class="flex items-center justify-between p-4 border-b">
+          <h2 class="text-xl font-semibold text-gray-800">LUGAVE AUTO</h2>
+          <button id="closeSidebar" class="md:hidden">
+            <i class="ri-close-line text-2xl text-gray-600"></i>
+          </button>
+        </div>
+        <nav class="p-4">
+          <ul class="space-y-2">
+            {% if current_user.is_authenticated %}
+            <li>
+              <a
+                href="{{ url_for('main.dashboard') }}"
+                class="flex items-center space-x-3 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
+              >
+                <i class="ri-dashboard-line text-xl"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="{{ url_for('cars.car_list') }}"
+                class="flex items-center space-x-3 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
+              >
+                <i class="ri-car-line text-xl"></i>
+                <span>Cars</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="{{ url_for('cars.sellable_cars') }}"
+                class="flex items-center space-x-3 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
+              >
+                <i class="ri-exchange-dollar-line text-xl"></i>
+                <span>Sell Car</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="{{ url_for('clients.client_list') }}"
+                class="flex items-center space-x-3 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
+              >
+                <i class="ri-user-line text-xl"></i>
+                <span>Clients</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="{{ url_for('expenses.expense_list') }}"
+                class="flex items-center space-x-3 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
+              >
+                <i class="ri-money-dollar-circle-line text-xl"></i>
+                <span>Expenses</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="{{ url_for('debt.debt_tracker') }}"
+                class="flex items-center space-x-3 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
+              >
+                <i class="ri-money-dollar-box-line text-xl"></i>
+                <span>Debt Tracker</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="{{ url_for('auth.logout') }}"
+                class="flex items-center space-x-3 text-red-500 p-2 rounded-lg hover:bg-red-100 transition-colors duration-300"
+              >
+                <i class="ri-logout-box-line text-xl"></i>
+                <span>Log Out</span>
+              </a>
+            </li>
+            {% else %}
+            <li>
+              <a
+                href="{{ url_for('auth.login') }}"
+                class="flex items-center space-x-3 text-gray-700 p-2 rounded-lg hover:bg-gray-200 transition-colors duration-300"
+              >
+                <i class="ri-login-box-line text-xl"></i>
+                <span>Log In</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="{{ url_for('auth.register') }}"
+                class="flex items-center space-x-3 text-green-500 p-2 rounded-lg hover:bg-green-100 transition-colors duration-300"
+              >
+                <i class="ri-user-add-line text-xl"></i>
+                <span>Sign Up</span>
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main content -->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+          <div class="flex items-center justify-between p-4">
+            <button id="openSidebar" class="md:hidden">
+              <i class="ri-menu-line text-2xl text-gray-600"></i>
+            </button>
+            <h1 class="text-xl font-semibold text-gray-800">
+              {% block header %}{{ current_user.username }}{% endblock %}
+            </h1>
+          </div>
+        </header>
+
+        <!-- Main content area -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-4">
+          <div class="max-w-6xl mx-auto">
+            {% with messages = get_flashed_messages(with_categories=true) %} {%
+            if messages %} {% for category, message in messages %}
+            <div
+              class="bg-{{ category }}-100 border border-{{ category }}-400 text-{{ category }}-700 px-4 py-3 rounded relative mb-4"
+              role="alert"
+            >
+              <span class="block sm:inline">{{ message }}</span>
+            </div>
+            {% endfor %} {% endif %} {% endwith %} {% block content %}{%
+            endblock %}
+          </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white text-center lg:text-left">
+          <div class="text-gray-700 text-center p-4">
+            © <span id="year"></span> Car Management System
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      const sidebar = document.getElementById("sidebar");
+      const openSidebarBtn = document.getElementById("openSidebar");
+      const closeSidebarBtn = document.getElementById("closeSidebar");
+
+      function openSidebar() {
+        sidebar.classList.remove("-translate-x-full");
+      }
+
+      function closeSidebar() {
+        sidebar.classList.add("-translate-x-full");
+      }
+
+      openSidebarBtn.addEventListener("click", openSidebar);
+      closeSidebarBtn.addEventListener("click", closeSidebar);
+
+      // Close sidebar when clicking outside of it
+      document.addEventListener("click", (event) => {
+        const isClickInsideSidebar = sidebar.contains(event.target);
+        const isClickOnOpenButton = openSidebarBtn.contains(event.target);
+        if (
+          !isClickInsideSidebar &&
+          !isClickOnOpenButton &&
+          window.innerWidth < 768
+        ) {
+          closeSidebar();
+        }
+      });
+
+      // Adjust sidebar visibility on window resize
+      window.addEventListener("resize", () => {
+        if (window.innerWidth >= 768) {
+          sidebar.classList.remove("-translate-x-full");
+        } else {
+          sidebar.classList.add("-translate-x-full");
+        }
+      });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>
